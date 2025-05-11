@@ -45,47 +45,162 @@ const InsuranceForm = () => {
   });
 
   const calculatePremium = () => {
+    // If gardenType or childrenCount are not set, return 0
+    if (!formData.gardenType || !formData.childrenCount) {
+      return 0;
+    }
+    
+    const childrenCount = parseInt(formData.childrenCount.toString()) || 0;
     let basePremium = 0;
     
-    // Base premium calculation based on garden type
+    // Calculate base premium based on garden type and children count
     switch (formData.gardenType) {
-      case "private":
-        basePremium = 1200;
+      case "tamah": // תמ"ת
+        if (childrenCount <= 6) {
+          basePremium = 500;
+        } else if (childrenCount <= 10) {
+          basePremium = 1000;
+        } else {
+          basePremium = 1000 + (100 * (childrenCount - 10));
+        }
         break;
-      case "public":
-        basePremium = 1500;
+        
+      case "privateFamily": // משפחתון פרטי
+        if (childrenCount <= 6) {
+          basePremium = 650;
+        } else if (childrenCount <= 8) {
+          basePremium = 900;
+        } else if (childrenCount === 9) {
+          basePremium = 900 + 105;
+        } else { // 10 children or more
+          let calculatedPremium = 1100 + (110 * (childrenCount - 10));
+          const discount = 10 * childrenCount;
+          basePremium = Math.max(1100, calculatedPremium - discount);
+        }
         break;
-      case "special":
-        basePremium = 1800;
+        
+      case "upTo3": // גן עד גיל 3
+        let calculatedPremium = 1400;
+        if (childrenCount > 12) {
+          calculatedPremium += 120 * (childrenCount - 12);
+        }
+        const discount = 10 * childrenCount;
+        basePremium = Math.max(1400, calculatedPremium - discount);
         break;
+        
+      case "over3": // גן מעל גיל 3
+      case "afterSchool": // צהרון בלבד
+        if (formData.insuranceOptions.contentBuilding) {
+          // מסלול 6
+          let calculatedPremium = 1400;
+          if (childrenCount > 17) {
+            calculatedPremium += 80 * (childrenCount - 17);
+          }
+          const discount = 5 * childrenCount;
+          basePremium = Math.max(1400, calculatedPremium - discount);
+        } else {
+          // מסלול 5
+          let calculatedPremium = 1100;
+          if (childrenCount > 20) {
+            calculatedPremium += 55 * (childrenCount - 20);
+          }
+          const discount = 5 * childrenCount;
+          basePremium = Math.max(1100, calculatedPremium - discount);
+        }
+        break;
+        
       default:
-        basePremium = 1000;
+        basePremium = 0;
     }
     
-    // Adjust for number of children
-    const childrenCount = parseInt(formData.childrenCount.toString()) || 0;
-    if (childrenCount <= 20) {
-      // Base price for up to 20 children
-    } else if (childrenCount <= 50) {
-      basePremium += 200;
-    } else if (childrenCount <= 100) {
-      basePremium += 400;
-    } else {
-      basePremium += 600;
+    // Add premium for selected insurance options
+    let additionalPremium = 0;
+    
+    // Content Building
+    if (formData.insuranceOptions.contentBuilding) {
+      const contentSum = parseInt(formData.contentBuildingDetails.contentSum?.toString() || "0");
+      if (contentSum > 200000) {
+        additionalPremium += (contentSum - 200000) * 0.001;
+      }
     }
     
-    // Add premiums for selected insurance options
-    if (formData.insuranceOptions.contentBuilding) basePremium += 300;
-    if (formData.insuranceOptions.thirdParty) basePremium += 250;
-    if (formData.insuranceOptions.deductibleCancellation) basePremium += 150;
-    if (formData.insuranceOptions.teacherAccidents) basePremium += 200;
-    if (formData.insuranceOptions.professionalLiability) basePremium += 350;
-    if (formData.insuranceOptions.employerLiability) basePremium += 400;
-    if (formData.insuranceOptions.cyberInsurance) basePremium += 180;
-    if (formData.insuranceOptions.incomeLoss) basePremium += 220;
-    if (formData.insuranceOptions.afterSchoolProgram) basePremium += 280;
+    // Third Party
+    if (formData.insuranceOptions.thirdParty) {
+      switch (formData.thirdPartyDetails.thirdPartyCoverage) {
+        case "5M":
+          additionalPremium += childrenCount <= 20 ? 200 : 300;
+          break;
+        case "8M":
+          additionalPremium += 1000;
+          break;
+        case "10M":
+          additionalPremium += 2000;
+          break;
+      }
+    }
     
-    return basePremium;
+    // Deductible Cancellation
+    if (formData.insuranceOptions.deductibleCancellation) {
+      additionalPremium += childrenCount <= 20 ? 200 : 300;
+    }
+    
+    // Teacher Accidents
+    if (formData.insuranceOptions.teacherAccidents) {
+      switch (formData.teacherAccidentsDetails.teacherAccidentsCoverage) {
+        case "A":
+          additionalPremium += 200;
+          break;
+        case "B":
+          additionalPremium += 600;
+          break;
+        case "C":
+          additionalPremium += 800;
+          break;
+      }
+    }
+    
+    // Professional Liability
+    if (formData.insuranceOptions.professionalLiability) {
+      additionalPremium += 250;
+    }
+    
+    // Employer Liability
+    if (formData.insuranceOptions.employerLiability) {
+      additionalPremium += formData.employerLiabilityDetails.employerLiabilityCoverage === "regular" ? 105 : 500;
+    }
+    
+    // Cyber Insurance
+    if (formData.insuranceOptions.cyberInsurance) {
+      additionalPremium += 450;
+    }
+    
+    // Income Loss
+    if (formData.insuranceOptions.incomeLoss) {
+      switch (formData.incomeLossDetails.incomeLossDuration) {
+        case "3":
+          additionalPremium += 500;
+          break;
+        case "6":
+          additionalPremium += 900;
+          break;
+        case "12":
+          additionalPremium += 1500;
+          break;
+      }
+    }
+    
+    // After School Program
+    if (formData.insuranceOptions.afterSchoolProgram) {
+      const afterSchoolChildrenCount = parseInt(formData.afterSchoolProgramDetails.afterSchoolChildrenCount?.toString() || "0");
+      
+      if (afterSchoolChildrenCount <= 20) {
+        additionalPremium += 500;
+      } else {
+        additionalPremium += 500 + (25 * (afterSchoolChildrenCount - 20));
+      }
+    }
+    
+    return Math.round(basePremium + additionalPremium);
   };
 
   const updateFormData = (newData: any) => {
@@ -98,21 +213,50 @@ const InsuranceForm = () => {
   };
 
   const updateInsuranceOptions = (option: string, value: boolean) => {
-    setFormData((prev) => ({
-      ...prev,
-      insuranceOptions: {
+    setFormData((prev) => {
+      const updatedOptions = {
         ...prev.insuranceOptions,
         [option]: value,
-      },
-    }));
+      };
+      
+      const updatedData = {
+        ...prev,
+        insuranceOptions: updatedOptions
+      };
+      
+      // Calculate premium after updating options
+      const premium = calculatePremium();
+      
+      return { 
+        ...updatedData, 
+        premium 
+      };
+    });
   };
 
   const nextStep = () => {
-    // Form validation could be added here
-    if (currentStep < 4) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      handleSubmit();
+    // Basic form validation for required fields
+    let canProceed = true;
+    
+    if (currentStep === 1) {
+      if (!formData.customerName || !formData.emailAddress || !formData.phoneNumber) {
+        toast.error("נא למלא את כל שדות החובה");
+        canProceed = false;
+      }
+    } else if (currentStep === 2) {
+      if (!formData.gardenName || !formData.gardenType || !formData.address || 
+          !formData.policyNumber || !formData.childrenCount || !formData.policyEndDate) {
+        toast.error("נא למלא את כל שדות החובה");
+        canProceed = false;
+      }
+    }
+    
+    if (canProceed) {
+      if (currentStep < 4) {
+        setCurrentStep(currentStep + 1);
+      } else {
+        handleSubmit();
+      }
     }
   };
 

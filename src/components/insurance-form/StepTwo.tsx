@@ -50,9 +50,11 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
             <SelectValue placeholder="בחר סוג גן" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="private">גן פרטי</SelectItem>
-            <SelectItem value="public">גן ציבורי</SelectItem>
-            <SelectItem value="special">גן לחינוך מיוחד</SelectItem>
+            <SelectItem value="tamah">תמ"ת</SelectItem>
+            <SelectItem value="privateFamily">משפחתון פרטי</SelectItem>
+            <SelectItem value="upTo3">גן עד גיל 3</SelectItem>
+            <SelectItem value="over3">גן מעל גיל 3</SelectItem>
+            <SelectItem value="afterSchool">צהרון בלבד</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -75,16 +77,17 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
       
       <div className="form-group">
         <Label htmlFor="policyNumber" className="text-lg font-medium text-gray-700 block mb-2">
-          מספר פוליסה (אם קיים)
+          מספר פוליסה
         </Label>
         <Input
           id="policyNumber"
           name="policyNumber"
           type="text"
+          required
           value={formData.policyNumber}
           onChange={handleChange}
           className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-3"
-          placeholder="מספר פוליסה (אופציונלי)"
+          placeholder="מספר פוליסה"
         />
       </div>
       
@@ -101,18 +104,19 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
           onChange={handleChange}
           className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-3"
           placeholder="מספר ילדים בגן"
-          min="0"
+          min="1"
         />
       </div>
       
       <div className="form-group">
         <Label htmlFor="policyEndDate" className="text-lg font-medium text-gray-700 block mb-2">
-          תאריך סיום הפוליסה הנוכחית
+          תאריך סיום הפוליסה
         </Label>
         <Input
           id="policyEndDate"
           name="policyEndDate"
           type="date"
+          required
           value={formData.policyEndDate}
           onChange={handleChange}
           className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-3"

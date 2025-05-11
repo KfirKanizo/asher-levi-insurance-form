@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
 
@@ -17,7 +18,7 @@ const StepThree = ({ formData, updateFormData, updateInsuranceOptions }: StepThr
     updateInsuranceOptions(option, checked);
   };
 
-  const handleDetailChange = (category: string, field: string, value: string) => {
+  const handleDetailChange = (category: string, field: string, value: string | number | boolean) => {
     updateFormData({
       [`${category}Details`]: {
         ...formData[`${category}Details`],
@@ -56,35 +57,97 @@ const StepThree = ({ formData, updateFormData, updateInsuranceOptions }: StepThr
           {formData.insuranceOptions.contentBuilding && (
             <div className="conditional-fields mt-4 pr-8 space-y-4">
               <div className="form-group">
-                <Label htmlFor="buildingValue" className="text-sm font-medium text-gray-700 block mb-1">
-                  ערך המבנה (בש״ח)
+                <Label htmlFor="contentSum" className="text-sm font-medium text-gray-700 block mb-1">
+                  סכום תכולה (בש״ח)
                 </Label>
                 <Input
-                  id="buildingValue"
+                  id="contentSum"
                   type="number"
                   min="0"
-                  onChange={(e) => handleDetailChange("contentBuilding", "buildingValue", e.target.value)}
-                  value={formData.contentBuildingDetails.buildingValue || ""}
+                  required
+                  onChange={(e) => handleDetailChange("contentBuilding", "contentSum", e.target.value)}
+                  value={formData.contentBuildingDetails.contentSum || ""}
                   className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-2"
-                  placeholder="הזן ערך משוער של המבנה"
+                  placeholder="הזן סכום תכולה"
                   dir="ltr"
                 />
               </div>
               <div className="form-group">
-                <Label htmlFor="contentValue" className="text-sm font-medium text-gray-700 block mb-1">
-                  ערך התכולה (בש״ח)
+                <Label htmlFor="buildingSum" className="text-sm font-medium text-gray-700 block mb-1">
+                  סכום מבנה (בש״ח)
                 </Label>
                 <Input
-                  id="contentValue"
+                  id="buildingSum"
                   type="number"
                   min="0"
-                  onChange={(e) => handleDetailChange("contentBuilding", "contentValue", e.target.value)}
-                  value={formData.contentBuildingDetails.contentValue || ""}
+                  required
+                  onChange={(e) => handleDetailChange("contentBuilding", "buildingSum", e.target.value)}
+                  value={formData.contentBuildingDetails.buildingSum || ""}
                   className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-2"
-                  placeholder="הזן ערך משוער של התכולה"
+                  placeholder="הזן סכום מבנה"
                   dir="ltr"
                 />
               </div>
+              <div className="form-group">
+                <Label htmlFor="yardContentSum" className="text-sm font-medium text-gray-700 block mb-1">
+                  סכום תכולת חצר (בש״ח)
+                </Label>
+                <Input
+                  id="yardContentSum"
+                  type="number"
+                  min="0"
+                  required
+                  onChange={(e) => handleDetailChange("contentBuilding", "yardContentSum", e.target.value)}
+                  value={formData.contentBuildingDetails.yardContentSum || ""}
+                  className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-2"
+                  placeholder="הזן סכום תכולת חצר"
+                  dir="ltr"
+                />
+              </div>
+              <div className="form-group">
+                <Label htmlFor="buildingType" className="text-sm font-medium text-gray-700 block mb-1">
+                  סוג מבנה
+                </Label>
+                <Input
+                  id="buildingType"
+                  type="text"
+                  required
+                  onChange={(e) => handleDetailChange("contentBuilding", "buildingType", e.target.value)}
+                  value={formData.contentBuildingDetails.buildingType || ""}
+                  className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-2"
+                  placeholder="הזן סוג מבנה"
+                />
+              </div>
+              <div className="form-group">
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  <Checkbox
+                    id="hasLien"
+                    checked={formData.contentBuildingDetails.hasLien || false}
+                    onCheckedChange={(checked) => 
+                      handleDetailChange("contentBuilding", "hasLien", !!checked)
+                    }
+                  />
+                  <Label htmlFor="hasLien" className="text-sm font-medium text-gray-700">
+                    האם יש שעבוד?
+                  </Label>
+                </div>
+              </div>
+              {formData.contentBuildingDetails.hasLien && (
+                <div className="form-group mt-2 pr-8">
+                  <Label htmlFor="lienHolder" className="text-sm font-medium text-gray-700 block mb-1">
+                    בעל השעבוד
+                  </Label>
+                  <Input
+                    id="lienHolder"
+                    type="text"
+                    required
+                    onChange={(e) => handleDetailChange("contentBuilding", "lienHolder", e.target.value)}
+                    value={formData.contentBuildingDetails.lienHolder || ""}
+                    className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-2"
+                    placeholder="הזן שם בעל השעבוד"
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -114,19 +177,22 @@ const StepThree = ({ formData, updateFormData, updateInsuranceOptions }: StepThr
           {formData.insuranceOptions.thirdParty && (
             <div className="conditional-fields mt-4 pr-8">
               <div className="form-group">
-                <Label htmlFor="coverageLimit" className="text-sm font-medium text-gray-700 block mb-1">
-                  גבול אחריות מבוקש
+                <Label htmlFor="thirdPartyCoverage" className="text-sm font-medium text-gray-700 block mb-1">
+                  גבול אחריות
                 </Label>
-                <Input
-                  id="coverageLimit"
-                  type="number"
-                  min="0"
-                  onChange={(e) => handleDetailChange("thirdParty", "coverageLimit", e.target.value)}
-                  value={formData.thirdPartyDetails.coverageLimit || ""}
-                  className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-2"
-                  placeholder="הזן גבול אחריות מבוקש"
-                  dir="ltr"
-                />
+                <Select
+                  value={formData.thirdPartyDetails.thirdPartyCoverage || ""}
+                  onValueChange={(value) => handleDetailChange("thirdParty", "thirdPartyCoverage", value)}
+                >
+                  <SelectTrigger className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md">
+                    <SelectValue placeholder="בחר גבול אחריות" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="5M">5 מיליון ₪</SelectItem>
+                    <SelectItem value="8M">8 מיליון ₪</SelectItem>
+                    <SelectItem value="10M">10 מיליון ₪</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           )}
@@ -180,18 +246,22 @@ const StepThree = ({ formData, updateFormData, updateInsuranceOptions }: StepThr
           {formData.insuranceOptions.teacherAccidents && (
             <div className="conditional-fields mt-4 pr-8">
               <div className="form-group">
-                <Label htmlFor="teacherCount" className="text-sm font-medium text-gray-700 block mb-1">
-                  מספר אנשי צוות
+                <Label htmlFor="teacherAccidentsCoverage" className="text-sm font-medium text-gray-700 block mb-1">
+                  רמת כיסוי
                 </Label>
-                <Input
-                  id="teacherCount"
-                  type="number"
-                  min="1"
-                  onChange={(e) => handleDetailChange("teacherAccidents", "teacherCount", e.target.value)}
-                  value={formData.teacherAccidentsDetails.teacherCount || ""}
-                  className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-2"
-                  placeholder="הזן מספר אנשי צוות"
-                />
+                <Select
+                  value={formData.teacherAccidentsDetails.teacherAccidentsCoverage || ""}
+                  onValueChange={(value) => handleDetailChange("teacherAccidents", "teacherAccidentsCoverage", value)}
+                >
+                  <SelectTrigger className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md">
+                    <SelectValue placeholder="בחר רמת כיסוי" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="A">רמה A</SelectItem>
+                    <SelectItem value="B">רמה B</SelectItem>
+                    <SelectItem value="C">רמה C</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           )}
@@ -245,18 +315,21 @@ const StepThree = ({ formData, updateFormData, updateInsuranceOptions }: StepThr
           {formData.insuranceOptions.employerLiability && (
             <div className="conditional-fields mt-4 pr-8">
               <div className="form-group">
-                <Label htmlFor="employeeCount" className="text-sm font-medium text-gray-700 block mb-1">
-                  מספר עובדים
+                <Label htmlFor="employerLiabilityCoverage" className="text-sm font-medium text-gray-700 block mb-1">
+                  רמת כיסוי
                 </Label>
-                <Input
-                  id="employeeCount"
-                  type="number"
-                  min="0"
-                  onChange={(e) => handleDetailChange("employerLiability", "employeeCount", e.target.value)}
-                  value={formData.employerLiabilityDetails.employeeCount || ""}
-                  className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-2"
-                  placeholder="הזן מספר עובדים"
-                />
+                <Select
+                  value={formData.employerLiabilityDetails.employerLiabilityCoverage || ""}
+                  onValueChange={(value) => handleDetailChange("employerLiability", "employerLiabilityCoverage", value)}
+                >
+                  <SelectTrigger className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md">
+                    <SelectValue placeholder="בחר רמת כיסוי" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="regular">רגיל</SelectItem>
+                    <SelectItem value="certified">מורשה</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           )}
@@ -310,19 +383,22 @@ const StepThree = ({ formData, updateFormData, updateInsuranceOptions }: StepThr
           {formData.insuranceOptions.incomeLoss && (
             <div className="conditional-fields mt-4 pr-8">
               <div className="form-group">
-                <Label htmlFor="monthlyIncome" className="text-sm font-medium text-gray-700 block mb-1">
-                  הכנסה חודשית ממוצעת (בש״ח)
+                <Label htmlFor="incomeLossDuration" className="text-sm font-medium text-gray-700 block mb-1">
+                  משך תקופת הכיסוי (בחודשים)
                 </Label>
-                <Input
-                  id="monthlyIncome"
-                  type="number"
-                  min="0"
-                  onChange={(e) => handleDetailChange("incomeLoss", "monthlyIncome", e.target.value)}
-                  value={formData.incomeLossDetails.monthlyIncome || ""}
-                  className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-2"
-                  placeholder="הזן הכנסה חודשית ממוצעת"
-                  dir="ltr"
-                />
+                <Select
+                  value={formData.incomeLossDetails.incomeLossDuration || ""}
+                  onValueChange={(value) => handleDetailChange("incomeLoss", "incomeLossDuration", value)}
+                >
+                  <SelectTrigger className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md">
+                    <SelectValue placeholder="בחר תקופת כיסוי" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="3">3 חודשים</SelectItem>
+                    <SelectItem value="6">6 חודשים</SelectItem>
+                    <SelectItem value="12">12 חודשים</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           )}
@@ -353,28 +429,16 @@ const StepThree = ({ formData, updateFormData, updateInsuranceOptions }: StepThr
           {formData.insuranceOptions.afterSchoolProgram && (
             <div className="conditional-fields mt-4 pr-8">
               <div className="form-group">
-                <Label htmlFor="afterSchoolHours" className="text-sm font-medium text-gray-700 block mb-1">
-                  שעות פעילות הצהרון
-                </Label>
-                <Input
-                  id="afterSchoolHours"
-                  type="text"
-                  onChange={(e) => handleDetailChange("afterSchoolProgram", "afterSchoolHours", e.target.value)}
-                  value={formData.afterSchoolProgramDetails.afterSchoolHours || ""}
-                  className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-2"
-                  placeholder="לדוגמה: 13:00-16:00"
-                />
-              </div>
-              <div className="form-group mt-4">
-                <Label htmlFor="afterSchoolChildren" className="text-sm font-medium text-gray-700 block mb-1">
+                <Label htmlFor="afterSchoolChildrenCount" className="text-sm font-medium text-gray-700 block mb-1">
                   מספר ילדים בצהרון
                 </Label>
                 <Input
-                  id="afterSchoolChildren"
+                  id="afterSchoolChildrenCount"
                   type="number"
                   min="0"
-                  onChange={(e) => handleDetailChange("afterSchoolProgram", "afterSchoolChildren", e.target.value)}
-                  value={formData.afterSchoolProgramDetails.afterSchoolChildren || ""}
+                  required
+                  onChange={(e) => handleDetailChange("afterSchoolProgram", "afterSchoolChildrenCount", e.target.value)}
+                  value={formData.afterSchoolProgramDetails.afterSchoolChildrenCount || ""}
                   className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-2"
                   placeholder="הזן מספר ילדים בצהרון"
                 />
