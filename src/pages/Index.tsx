@@ -36,12 +36,29 @@ const InsuranceForm = () => {
       afterSchoolProgram: false,
     },
     premium: 0,
-    contentBuildingDetails: {},
-    thirdPartyDetails: {},
-    teacherAccidentsDetails: {},
-    employerLiabilityDetails: {},
-    incomeLossDetails: {},
-    afterSchoolProgramDetails: {},
+    contentBuildingDetails: {
+      contentSum: 0,
+      buildingSum: 0,
+      yardContentSum: 0,
+      buildingType: "",
+      hasLien: false,
+      lienHolder: "",
+    },
+    thirdPartyDetails: {
+      thirdPartyCoverage: "",
+    },
+    teacherAccidentsDetails: {
+      teacherAccidentsCoverage: "",
+    },
+    employerLiabilityDetails: {
+      employerLiabilityCoverage: "",
+    },
+    incomeLossDetails: {
+      incomeLossDuration: "",
+    },
+    afterSchoolProgramDetails: {
+      afterSchoolChildrenCount: 0,
+    },
   });
 
   const calculatePremium = () => {
@@ -219,10 +236,42 @@ const InsuranceForm = () => {
         [option]: value,
       };
       
-      const updatedData = {
+      // Reset the associated details object if the option is disabled
+      let updatedData: any = {
         ...prev,
         insuranceOptions: updatedOptions
       };
+      
+      // If disabling an option, reset its details
+      if (!value) {
+        switch(option) {
+          case 'contentBuilding':
+            updatedData.contentBuildingDetails = {
+              contentSum: 0,
+              buildingSum: 0,
+              yardContentSum: 0,
+              buildingType: "",
+              hasLien: false,
+              lienHolder: "",
+            };
+            break;
+          case 'thirdParty':
+            updatedData.thirdPartyDetails = { thirdPartyCoverage: "" };
+            break;
+          case 'teacherAccidents':
+            updatedData.teacherAccidentsDetails = { teacherAccidentsCoverage: "" };
+            break;
+          case 'employerLiability':
+            updatedData.employerLiabilityDetails = { employerLiabilityCoverage: "" };
+            break;
+          case 'incomeLoss':
+            updatedData.incomeLossDetails = { incomeLossDuration: "" };
+            break;
+          case 'afterSchoolProgram':
+            updatedData.afterSchoolProgramDetails = { afterSchoolChildrenCount: 0 };
+            break;
+        }
+      }
       
       // Calculate premium after updating options
       const premium = calculatePremium();
