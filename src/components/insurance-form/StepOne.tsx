@@ -3,6 +3,7 @@ import { Info } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface StepOneProps {
   formData: any;
@@ -25,14 +26,14 @@ const StepOne = ({ formData, updateFormData }: StepOneProps) => {
             <Label htmlFor="customerName" className="text-lg font-medium text-gray-700">
               שם מלא
             </Label>
-            <Tooltip>
-              <TooltipTrigger asChild>
+            <Popover>
+              <PopoverTrigger asChild>
                 <Info className="h-4 w-4 text-indigo-500 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent align="end" side="top" className="bg-white text-right rtl p-3 max-w-xs">
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-72 bg-white text-right rtl p-3">
                 <div dangerouslySetInnerHTML={{ __html: "<strong>הזן את שם הלקוח המלא</strong><br>לצורך זיהוי והתקשרות" }} />
-              </TooltipContent>
-            </Tooltip>
+              </PopoverContent>
+            </Popover>
           </div>
           <Input
             id="customerName"
@@ -51,14 +52,14 @@ const StepOne = ({ formData, updateFormData }: StepOneProps) => {
             <Label htmlFor="emailAddress" className="text-lg font-medium text-gray-700">
               כתובת דוא"ל
             </Label>
-            <Tooltip>
-              <TooltipTrigger asChild>
+            <Popover>
+              <PopoverTrigger asChild>
                 <Info className="h-4 w-4 text-indigo-500 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent align="end" side="top" className="bg-white text-right rtl p-3 max-w-xs">
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-72 bg-white text-right rtl p-3">
                 <div dangerouslySetInnerHTML={{ __html: "<strong>הכנס כתובת דוא\"ל תקינה</strong><br>לשליחת אישורי פוליסה" }} />
-              </TooltipContent>
-            </Tooltip>
+              </PopoverContent>
+            </Popover>
           </div>
           <Input
             id="emailAddress"
@@ -78,14 +79,14 @@ const StepOne = ({ formData, updateFormData }: StepOneProps) => {
             <Label htmlFor="phoneNumber" className="text-lg font-medium text-gray-700">
               מספר טלפון
             </Label>
-            <Tooltip>
-              <TooltipTrigger asChild>
+            <Popover>
+              <PopoverTrigger asChild>
                 <Info className="h-4 w-4 text-indigo-500 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent align="end" side="top" className="bg-white text-right rtl p-3 max-w-xs">
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-72 bg-white text-right rtl p-3">
                 <div dangerouslySetInnerHTML={{ __html: "<strong>הזן מספר טלפון תקין</strong><br>לתיאום ויצירת קשר בנושאי הפוליסה" }} />
-              </TooltipContent>
-            </Tooltip>
+              </PopoverContent>
+            </Popover>
           </div>
           <Input
             id="phoneNumber"

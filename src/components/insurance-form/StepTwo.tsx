@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useEffect } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface StepTwoProps {
   formData: any;
@@ -95,14 +95,14 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
             <Label htmlFor="gardenName" className="text-lg font-medium text-gray-700">
               שם הגן
             </Label>
-            <Tooltip>
-              <TooltipTrigger asChild>
+            <Popover>
+              <PopoverTrigger asChild>
                 <Info className="h-4 w-4 text-indigo-500 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent align="end" side="top" className="bg-white text-right rtl p-3 max-w-xs">
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-72 bg-white text-right rtl p-3">
                 <div dangerouslySetInnerHTML={{ __html: "<strong>הזן את שם הגן המלא</strong><br>שם הגן כפי שמופיע במסמכים הרשמיים" }} />
-              </TooltipContent>
-            </Tooltip>
+              </PopoverContent>
+            </Popover>
           </div>
           <Input
             id="gardenName"
@@ -121,14 +121,14 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
             <Label htmlFor="gardenType" className="text-lg font-medium text-gray-700">
               סוג הגן
             </Label>
-            <Tooltip>
-              <TooltipTrigger asChild>
+            <Popover>
+              <PopoverTrigger asChild>
                 <Info className="h-4 w-4 text-indigo-500 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent align="end" side="top" className="bg-white text-right rtl p-3 max-w-xs">
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-72 bg-white text-right rtl p-3">
                 <div dangerouslySetInnerHTML={{ __html: "<strong>בחר את סוג המסגרת</strong><br>לדוגמה: תמ\"ת, משפחתון פרטי, גן עד גיל 3" }} />
-              </TooltipContent>
-            </Tooltip>
+              </PopoverContent>
+            </Popover>
           </div>
           <Select 
             value={formData.gardenType}
@@ -137,7 +137,7 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
             <SelectTrigger className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-3">
               <SelectValue placeholder="בחר סוג גן" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white z-50">
               <SelectItem value="tamah">תמ"ת</SelectItem>
               <SelectItem value="privateFamily">משפחתון פרטי</SelectItem>
               <SelectItem value="upTo3">גן עד גיל 3</SelectItem>
@@ -152,14 +152,14 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
             <Label htmlFor="address" className="text-lg font-medium text-gray-700">
               כתובת הגן
             </Label>
-            <Tooltip>
-              <TooltipTrigger asChild>
+            <Popover>
+              <PopoverTrigger asChild>
                 <Info className="h-4 w-4 text-indigo-500 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent align="end" side="top" className="bg-white text-right rtl p-3 max-w-xs">
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-72 bg-white text-right rtl p-3">
                 <div dangerouslySetInnerHTML={{ __html: "<strong>הזן את כתובת הגן המלאה</strong><br>כולל רחוב, מספר, עיר ומיקוד" }} />
-              </TooltipContent>
-            </Tooltip>
+              </PopoverContent>
+            </Popover>
           </div>
           <Input
             id="address"
@@ -178,14 +178,14 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
             <Label htmlFor="policyNumber" className="text-lg font-medium text-gray-700">
               מספר פוליסה
             </Label>
-            <Tooltip>
-              <TooltipTrigger asChild>
+            <Popover>
+              <PopoverTrigger asChild>
                 <Info className="h-4 w-4 text-indigo-500 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent align="end" side="top" className="bg-white text-right rtl p-3 max-w-xs">
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-72 bg-white text-right rtl p-3">
                 <div dangerouslySetInnerHTML={{ __html: "<strong>מספר פוליסה קיימת</strong><br>השאר ריק אם מדובר בפוליסה חדשה" }} />
-              </TooltipContent>
-            </Tooltip>
+              </PopoverContent>
+            </Popover>
           </div>
           <Input
             id="policyNumber"
@@ -204,14 +204,14 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
             <Label htmlFor="childrenCount" className="text-lg font-medium text-gray-700">
               מספר ילדים
             </Label>
-            <Tooltip>
-              <TooltipTrigger asChild>
+            <Popover>
+              <PopoverTrigger asChild>
                 <Info className="h-4 w-4 text-indigo-500 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent align="end" side="top" className="bg-white text-right rtl p-3 max-w-xs">
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-72 bg-white text-right rtl p-3">
                 <div dangerouslySetInnerHTML={{ __html: "<strong>מספר הילדים הרשומים בגן</strong><br>נתון זה משפיע על חישוב הפרמיה" }} />
-              </TooltipContent>
-            </Tooltip>
+              </PopoverContent>
+            </Popover>
           </div>
           <Input
             id="childrenCount"
@@ -231,14 +231,14 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
             <Label htmlFor="policyEndDate" className="text-lg font-medium text-gray-700">
               תאריך סיום הפוליסה
             </Label>
-            <Tooltip>
-              <TooltipTrigger asChild>
+            <Popover>
+              <PopoverTrigger asChild>
                 <Info className="h-4 w-4 text-indigo-500 cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent align="end" side="top" className="bg-white text-right rtl p-3 max-w-xs">
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-72 bg-white text-right rtl p-3">
                 <div dangerouslySetInnerHTML={{ __html: "<strong>תאריך סיום הפוליסה הנוכחית</strong><br>לצורך קביעת תאריך תחילת הפוליסה החדשה" }} />
-              </TooltipContent>
-            </Tooltip>
+              </PopoverContent>
+            </Popover>
           </div>
           <Input
             id="policyEndDate"
