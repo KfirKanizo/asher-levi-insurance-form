@@ -363,12 +363,29 @@ const InsuranceForm = () => {
         afterSchoolProgram: false,
       },
       premium: 0,
-      contentBuildingDetails: {},
-      thirdPartyDetails: {},
-      teacherAccidentsDetails: {},
-      employerLiabilityDetails: {},
-      incomeLossDetails: {},
-      afterSchoolProgramDetails: {},
+      contentBuildingDetails: {
+        contentSum: 0,
+        buildingSum: 0,
+        yardContentSum: 0,
+        buildingType: "",
+        hasLien: false,
+        lienHolder: "",
+      },
+      thirdPartyDetails: {
+        thirdPartyCoverage: "",
+      },
+      teacherAccidentsDetails: {
+        teacherAccidentsCoverage: "",
+      },
+      employerLiabilityDetails: {
+        employerLiabilityCoverage: "",
+      },
+      incomeLossDetails: {
+        incomeLossDuration: "",
+      },
+      afterSchoolProgramDetails: {
+        afterSchoolChildrenCount: 0,
+      },
     });
     setCurrentStep(1);
     setShowSuccess(false);
