@@ -286,21 +286,32 @@ const InsuranceForm = () => {
   const nextStep = () => {
     // Basic form validation for required fields
     let canProceed = true;
+    let missingFields = [];
     
     if (currentStep === 1) {
-      if (!formData.customerName || !formData.emailAddress || !formData.phoneNumber) {
-        toast.error("נא למלא את כל שדות החובה");
-        canProceed = false;
-      }
+      if (!formData.customerName) missingFields.push('שם לקוח');
+      if (!formData.emailAddress) missingFields.push('כתובת אימייל');
+      if (!formData.phoneNumber) missingFields.push('מספר טלפון');
+      
+      canProceed = missingFields.length === 0;
     } else if (currentStep === 2) {
-      if (!formData.gardenName || !formData.gardenType || !formData.address || 
-          !formData.policyNumber || !formData.childrenCount || !formData.policyEndDate) {
-        toast.error("נא למלא את כל שדות החובה");
-        canProceed = false;
-      }
+      // Check each field individually for better debugging
+      if (!formData.gardenName) missingFields.push('שם הגן');
+      if (!formData.gardenType) missingFields.push('סוג הגן');
+      if (!formData.address) missingFields.push('כתובת');
+      if (!formData.policyNumber) missingFields.push('מספר פוליסה');
+      if (!formData.childrenCount) missingFields.push('מספר ילדים');
+      if (!formData.policyEndDate) missingFields.push('תאריך סיום פוליסה');
+      
+      console.log('Garden type value:', formData.gardenType);
+      console.log('Missing fields:', missingFields);
+      
+      canProceed = missingFields.length === 0;
     }
     
-    if (canProceed) {
+    if (!canProceed) {
+      toast.error(`נא למלא את כל שדות החובה: ${missingFields.join(', ')}`);
+    } else {
       if (currentStep < 4) {
         setCurrentStep(currentStep + 1);
       } else {

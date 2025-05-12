@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useEffect } from "react";
 
 interface StepTwoProps {
   formData: any;
@@ -85,6 +86,12 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
     }
   };
 
+  // Fix issue with garden type not being properly set
+  useEffect(() => {
+    // Log the current garden type when the component mounts or formData changes
+    console.log("Current garden type:", formData.gardenType);
+  }, [formData.gardenType]);
+
   return (
     <div className="space-y-4 text-right">
       <h2 className="text-2xl font-bold text-indigo-800 mb-6">פרטי ביטוח</h2>
@@ -108,7 +115,7 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
           name="gardenName"
           type="text"
           required
-          value={formData.gardenName}
+          value={formData.gardenName || ""}
           onChange={handleChange}
           className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-3"
           placeholder="שם הגן"
@@ -130,7 +137,7 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
           </Popover>
         </div>
         <Select 
-          defaultValue={formData.gardenType || ""} 
+          value={formData.gardenType || ""} 
           onValueChange={(value) => handleSelectChange("gardenType", value)}
         >
           <SelectTrigger 
@@ -173,7 +180,7 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
           name="address"
           type="text"
           required
-          value={formData.address}
+          value={formData.address || ""}
           onChange={handleChange}
           className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-3"
           placeholder="כתובת מלאה"
@@ -198,8 +205,7 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
           id="policyNumber"
           name="policyNumber"
           type="text"
-          required
-          value={formData.policyNumber}
+          value={formData.policyNumber || ""}
           onChange={handleChange}
           className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-3"
           placeholder="מספר פוליסה"
@@ -225,7 +231,7 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
           name="childrenCount"
           type="number"
           required
-          value={formData.childrenCount}
+          value={formData.childrenCount || ""}
           onChange={handleChange}
           className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-3"
           placeholder="מספר ילדים בגן"
@@ -252,7 +258,7 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
           name="policyEndDate"
           type="date"
           required
-          value={formData.policyEndDate}
+          value={formData.policyEndDate || ""}
           onChange={handleChange}
           className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-3"
         />
