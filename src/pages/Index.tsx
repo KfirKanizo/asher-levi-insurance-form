@@ -221,7 +221,9 @@ const InsuranceForm = () => {
   };
 
   const updateFormData = (newData: any) => {
+    console.log("Updating form data:", newData);
     const updatedData = { ...formData, ...newData };
+    console.log("Updated form data:", updatedData);
     setFormData(updatedData);
     
     // Calculate premium on form data update
@@ -299,7 +301,6 @@ const InsuranceForm = () => {
       if (!formData.gardenName) missingFields.push('שם הגן');
       if (!formData.gardenType) missingFields.push('סוג הגן');
       if (!formData.address) missingFields.push('כתובת');
-      if (!formData.policyNumber) missingFields.push('מספר פוליסה');
       if (!formData.childrenCount) missingFields.push('מספר ילדים');
       if (!formData.policyEndDate) missingFields.push('תאריך סיום פוליסה');
       

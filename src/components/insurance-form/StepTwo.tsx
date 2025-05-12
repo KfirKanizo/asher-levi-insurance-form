@@ -88,7 +88,6 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
 
   // Fix issue with garden type not being properly set
   useEffect(() => {
-    // Log the current garden type when the component mounts or formData changes
     console.log("Current garden type:", formData.gardenType);
   }, [formData.gardenType]);
 
@@ -137,7 +136,7 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
           </Popover>
         </div>
         <Select 
-          value={formData.gardenType || ""} 
+          defaultValue={formData.gardenType} 
           onValueChange={(value) => handleSelectChange("gardenType", value)}
         >
           <SelectTrigger 
