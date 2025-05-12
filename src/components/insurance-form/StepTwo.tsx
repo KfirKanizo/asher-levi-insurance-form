@@ -130,13 +130,21 @@ const StepTwo = ({ formData, updateFormData }: StepTwoProps) => {
           </Popover>
         </div>
         <Select 
-          value={formData.gardenType || ""} 
+          defaultValue={formData.gardenType || ""} 
           onValueChange={(value) => handleSelectChange("gardenType", value)}
         >
-          <SelectTrigger className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-3 text-right">
-            <SelectValue placeholder="בחר סוג גן" className="text-right" />
+          <SelectTrigger 
+            id="gardenType"
+            className="w-full bg-white bg-opacity-50 border border-indigo-200 rounded-md p-3 text-right"
+          >
+            <SelectValue placeholder="בחר סוג גן" />
           </SelectTrigger>
-          <SelectContent className="bg-white z-50 text-right rtl">
+          <SelectContent 
+            position="popper" 
+            className="bg-white z-50 text-right rtl"
+            align="end"
+            sideOffset={5}
+          >
             <SelectItem value="tamah">תמ"ת</SelectItem>
             <SelectItem value="privateFamily">משפחתון פרטי</SelectItem>
             <SelectItem value="upTo3">גן עד גיל 3</SelectItem>
